@@ -1,0 +1,13 @@
+.body {
+  display: flex;
+  /* background-color: aqua; */
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.map {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
