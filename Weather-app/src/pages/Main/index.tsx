@@ -4,14 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import ClickableMarker from "../../components/ClickableMarker";
 import { Response } from "../../components/Request";
 function Main() {
-  console.log("Start");
   const [position, setPosition] = useState<[number, number]>([55.45, 33.37]);
-  console.log(Response({ lat: position[0], lon: position[1] }));
   const temperature = useRef<number>(0);
   const windy = useRef<number>(0);
   const wet = useRef<number>(0);
   const pressure = useRef<number>(0);
-  console.log(temperature.current);
+  const info = useRef<{ [key: string]: string }>({ info: "No information" });
   useEffect(() => {
     const requestOptions = {
       method: "POST",
@@ -22,9 +20,8 @@ function Main() {
       .then((response) => response.json())
       .then((data) => {
         const response: any = data;
-        console.log(response);
         temperature.current = Number(
-          response["temp-surface"].at(-1).toFixed(1),
+          ((response["temp-surface"].at(-1) ?? 0) - 273.15).toFixed(1),
         );
         windy.current = Number(
           Math.sqrt(
@@ -36,6 +33,13 @@ function Main() {
         pressure.current = Number(
           response["pressure-surface"].at(-1).toFixed(1),
         );
+      });
+    fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${position[0]}&lon=${position[1]}&format=json`,
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        info.current = data["address"];
       });
   }, [position]);
 
@@ -50,7 +54,6 @@ function Main() {
         zoomControl={false}
       >
         <TileLayer url="https://core-renderer-tiles.maps.yandex.net/tiles?l=map&v=22.03.20-0&x={x}&y={y}&z={z}&scale=1&lang=ru_RU" />
-        {/* https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png */}
         <ClickableMarker
           position={position}
           setPosition={setPosition}
@@ -58,6 +61,7 @@ function Main() {
           windy={windy.current}
           wet={wet.current}
           pressure={pressure.current}
+          info={info.current}
         />
       </MapContainer>
     </div>

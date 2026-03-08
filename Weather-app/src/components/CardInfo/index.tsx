@@ -4,16 +4,22 @@ function CardInfo({
   windy,
   wet,
   pressure,
+  info,
 }: {
   temperature: number;
   windy: number;
   wet: number;
   pressure: number;
+  info: { [key: string]: string };
 }) {
   return (
     <div className={css.body}>
       <div className={css.nameCoordinate}>
-        Такая-то точка на карте (место или координаты)
+        <div className={css.nameCoordinate}>
+          {info.country}
+          {info.state ? `, ${info.state}` : ""}
+          {info.county ? `, ${info.county}` : ""}
+        </div>
       </div>
       <div className={css.info}>
         <span>Температура: {temperature}</span>
@@ -21,7 +27,6 @@ function CardInfo({
         <span>Влажность: {wet}</span>
         <span>Давление: {pressure}</span>
       </div>
-      <button className={css.button}>додепать</button>
     </div>
   );
 }

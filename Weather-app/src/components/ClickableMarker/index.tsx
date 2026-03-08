@@ -9,6 +9,7 @@ function ClickableMarker({
   windy,
   wet,
   pressure,
+  info,
 }: {
   position: [number, number];
   setPosition: React.Dispatch<React.SetStateAction<[number, number]>>;
@@ -16,6 +17,7 @@ function ClickableMarker({
   windy: number;
   wet: number;
   pressure: number;
+  info: { [key: string]: string };
 }) {
   useMapEvents({
     click(e) {
@@ -30,6 +32,7 @@ function ClickableMarker({
           windy={windy}
           wet={wet}
           pressure={pressure}
+          info={info}
         />
       </Popup>
     </Marker>
