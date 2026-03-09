@@ -35,7 +35,6 @@ function Main() {
           wet: Number(response["rh-surface"].at(-1).toFixed(1)),
           pressure: Number(response["pressure-surface"].at(-1).toFixed(1)),
         });
-        console.log(weather);
       } catch (e) {
         console.error("Ошибка при загрузке погоды", e);
       }
