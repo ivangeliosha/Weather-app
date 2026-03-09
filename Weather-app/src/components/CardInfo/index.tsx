@@ -22,10 +22,12 @@ function CardInfo({
         </div>
       </div>
       <div className={css.info}>
-        <span>Температура: {temperature}</span>
-        <span>Ветер: {windy}</span>
-        <span>Влажность: {wet}</span>
-        <span>Давление: {pressure}</span>
+        <span>
+          Температура: {temperature > 0 ? `+${temperature} °C` : temperature} °C
+        </span>
+        <span>Ветер: {windy} м/с</span>
+        <span>Влажность: {wet} %</span>
+        <span>Давление: {(pressure * 0.75006).toFixed(0)}</span>
       </div>
     </div>
   );
