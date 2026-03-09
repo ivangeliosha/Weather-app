@@ -27,6 +27,6 @@ export const googleMarker = L.divIcon({
 </svg>
   `,
   iconSize: [28, 28],
-  iconAnchor: [14, 1],
-  popupAnchor: [-200, 0],
+  iconAnchor: [14, 1], 
+  popupAnchor: [0, 0],
 });

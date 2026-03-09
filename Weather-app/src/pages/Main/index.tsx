@@ -2,49 +2,56 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import css from "./Main.module.css";
 import { useEffect, useState } from "react";
 import ClickableMarker from "../../components/ClickableMarker";
-import { Response } from "../../components/Request";
+import type { Weather } from "../../types/Weather";
+import requestWeather from "../../components/RequestWeather";
+import requestInformation from "../../components/RequestInformation";
 function Main() {
   const [position, setPosition] = useState<[number, number]>([
     55.613699390365326, 37.60106467874721,
   ]);
-  const [temperature, setTemperature] = useState<number>(0);
-  const [windy, setWindy] = useState<number>(0);
-  const [wet, setWet] = useState<number>(0);
-  const [pressure, setPressure] = useState<number>(0);
+  const [weather, setWeather] = useState<Weather>({
+    temperature: 0,
+    windy: 0,
+    wet: 0,
+    pressure: 0,
+  });
   const [info, setInfo] = useState<{ [key: string]: string }>({
     info: "No information",
   });
   useEffect(() => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(Response({ lat: position[0], lon: position[1] })),
-    };
-    fetch("https://api.windy.com/api/point-forecast/v2", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        const response: any = data;
-        setTemperature(
-          Number(((response["temp-surface"].at(-1) ?? 0) - 273.15).toFixed(1)),
-        );
-        setWindy(
-          Number(
+    async function weatherSetting() {
+      try {
+        const response: any = await requestWeather({ position: position });
+        setWeather({
+          temperature: Number(
+            ((response["temp-surface"].at(-1) ?? 0) - 273.15).toFixed(1),
+          ),
+          windy: Number(
             Math.sqrt(
               (response["wind_u-surface"].at(-1) ?? 0) ** 2 +
                 (response["wind_v-surface"].at(-1) ?? 0) ** 2,
             ).toFixed(1),
           ),
-        );
-        setWet(Number(response["rh-surface"].at(-1).toFixed(1)));
-        setPressure(Number(response["pressure-surface"].at(-1).toFixed(1)));
-      });
-    fetch(
-      `https://nominatim.openstreetmap.org/reverse?lat=${position[0]}&lon=${position[1]}&format=json`,
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setInfo(data["address"]);
-      });
+          wet: Number(response["rh-surface"].at(-1).toFixed(1)),
+          pressure: Number(response["pressure-surface"].at(-1).toFixed(1)),
+        });
+        console.log(weather);
+      } catch (e) {
+        console.error("Ошибка при загрузке погоды", e);
+      }
+    }
+    async function informationSetting() {
+      try {
+        const responseInfo: any = await requestInformation({
+          position: position,
+        });
+        setInfo(responseInfo);
+      } catch (e) {
+        console.error("Ошибка при загрузке погоды", e);
+      }
+    }
+    weatherSetting();
+    informationSetting();
   }, [position]);
 
   return (
@@ -61,10 +68,7 @@ function Main() {
         <ClickableMarker
           position={position}
           setPosition={setPosition}
-          temperature={temperature}
-          windy={windy}
-          wet={wet}
-          pressure={pressure}
+          weather={weather}
           info={info}
         />
       </MapContainer>

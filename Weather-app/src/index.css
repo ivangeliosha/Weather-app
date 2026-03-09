@@ -17,16 +17,6 @@ body,
   margin: 0;
   padding: 0;
 }
-.leaflet-popup,
-.leaflet-popup-content-wrapper,
-.leaflet-popup-content {
-  background: transparent !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  width: 400px !important;
-  height: 199px !important;
-  padding: 0px;
-}
 
 /* Убираем треугольник */
 .leaflet-popup-tip {
@@ -37,15 +27,6 @@ body,
 .leaflet-popup {
   pointer-events: auto !important;
 }
-/* кнопка */
-.leaflet-popup-close-button {
-  top: 0px !important;
-  right: -8px !important;
-  left: auto !important;
-  width: 13px !important;
-  height: 13px !important;
-  font-size: 0 !important; /* скрываем стандартный × */
-}
 
 /* свой крестик */
 .leaflet-popup-close-button::after {
@@ -55,4 +36,63 @@ body,
   display: block;
   line-height: 13px;
   text-align: center;
+}
+@media (orientation: portrait) {
+  .body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .leaflet-popup {
+    margin-bottom: 1vh !important;
+  }
+
+  .leaflet-popup-content-wrapper {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  .leaflet-popup-content {
+    display: flex;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 80vw !important;
+    height: 25vh !important;
+  }
+
+  .leaflet-popup-close-button {
+    top: -2vh !important;
+    right: 3vw !important;
+    width: 13px !important;
+    height: 13px !important;
+    font-size: 0 !important;
+  }
+}
+@media (orientation: landscape) {
+  .leaflet-popup {
+    margin-bottom: 1vh !important;
+  }
+
+  .leaflet-popup-content-wrapper {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  .leaflet-popup-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 400px !important;
+    height: 199px !important;
+  }
+
+  .leaflet-popup-close-button {
+    top: -10px !important;
+    right: 10px !important;
+    width: 13px !important;
+    height: 13px !important;
+    font-size: 0 !important;
+  }
 }

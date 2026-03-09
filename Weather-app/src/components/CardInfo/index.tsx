@@ -1,15 +1,10 @@
+import type { Weather } from "../../types/Weather";
 import css from "./CardInfo.module.css";
 function CardInfo({
-  temperature,
-  windy,
-  wet,
-  pressure,
+  weather: { temperature, windy, wet, pressure },
   info,
 }: {
-  temperature: number;
-  windy: number;
-  wet: number;
-  pressure: number;
+  weather: Weather;
   info: { [key: string]: string };
 }) {
   return (
@@ -23,11 +18,11 @@ function CardInfo({
       </div>
       <div className={css.info}>
         <span>
-          Температура: {temperature > 0 ? `+${temperature} °C` : temperature} °C
+          Температура: {temperature > 0 ? `+${temperature}` : temperature} °C
         </span>
         <span>Ветер: {windy} м/с</span>
         <span>Влажность: {wet} %</span>
-        <span>Давление: {(pressure * 0.75006).toFixed(0)}</span>
+        <span>Давление: {(pressure * 0.00750062).toFixed(0)} мм рт.ст.</span>
       </div>
     </div>
   );

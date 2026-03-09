@@ -1,22 +1,17 @@
 import { Marker, Popup, useMapEvents } from "react-leaflet";
 import CardInfo from "../CardInfo";
 import { googleMarker } from "../../icons/marker";
+import type { Weather } from "../../types/Weather";
 
 function ClickableMarker({
   position,
   setPosition,
-  temperature,
-  windy,
-  wet,
-  pressure,
+  weather,
   info,
 }: {
   position: [number, number];
   setPosition: React.Dispatch<React.SetStateAction<[number, number]>>;
-  temperature: number;
-  windy: number;
-  wet: number;
-  pressure: number;
+  weather: Weather;
   info: { [key: string]: string };
 }) {
   useMapEvents({
@@ -27,13 +22,7 @@ function ClickableMarker({
   return (
     <Marker position={position} icon={googleMarker}>
       <Popup>
-        <CardInfo
-          temperature={temperature}
-          windy={windy}
-          wet={wet}
-          pressure={pressure}
-          info={info}
-        />
+        <CardInfo weather={weather} info={info} />
       </Popup>
     </Marker>
   );
